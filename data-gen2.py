@@ -15,7 +15,8 @@ TOTAL_RECORDS = 6900
 BILLING_MONTH_START = datetime(2025, 12, 1)
 BILLING_MONTH_END = datetime(2025, 12, 31)
 
-HANDOVER_START = datetime(2026, 1, 9)
+# ✅ FIX: start from Jan 8 so "yesterday" exists
+HANDOVER_START = datetime(2026, 1, 8)
 HANDOVER_END = datetime(2026, 1, 31)
 
 SEGMENT_CONFIG = {
@@ -52,7 +53,7 @@ def generate_invoice_ids(n):
     return [f"FDX2025{random.randint(1000000, 9999999)}" for _ in range(n)]
 
 # =============================
-# HANDOVER DATE CLUSTERING (FIXED)
+# HANDOVER DATE CLUSTERING
 # =============================
 def generate_clustered_handover_dates(total_records):
     dates = []
@@ -115,6 +116,7 @@ def generate_dataset():
         due_date = handover_date - timedelta(days=grace)
         invoice_date = due_date - timedelta(days=terms)
 
+        # Safety guard
         if invoice_date < BILLING_MONTH_START:
             invoice_date = BILLING_MONTH_START
             due_date = invoice_date + timedelta(days=terms)
@@ -146,7 +148,7 @@ def generate_dataset():
     return records
 
 # =============================
-# SAVE
+# MAIN
 # =============================
 if __name__ == "__main__":
     data = generate_dataset()
