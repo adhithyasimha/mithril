@@ -6,16 +6,12 @@ from faker import Faker
 
 fake = Faker()
 random.seed(42)
-
-# =============================
-# CONFIG
-# =============================
 TOTAL_RECORDS = 6900
 
 BILLING_MONTH_START = datetime(2025, 12, 1)
 BILLING_MONTH_END = datetime(2025, 12, 31)
 
-# ✅ FIX: start from Jan 8 so "yesterday" exists
+
 HANDOVER_START = datetime(2026, 1, 8)
 HANDOVER_END = datetime(2026, 1, 31)
 
@@ -32,9 +28,9 @@ ELIGIBILITY_DISTRIBUTION = {
     "RESOLVED_IN_GRACE": 0.35
 }
 
-# =============================
+
 # UNIQUE GENERATORS
-# =============================
+
 def generate_unique_company_names(n):
     names = set()
     used_first_words = set()
@@ -52,9 +48,9 @@ def generate_customer_ids(n):
 def generate_invoice_ids(n):
     return [f"FDX2025{random.randint(1000000, 9999999)}" for _ in range(n)]
 
-# =============================
+
 # HANDOVER DATE CLUSTERING
-# =============================
+
 def generate_clustered_handover_dates(total_records):
     dates = []
     valid_dates = []
@@ -72,9 +68,9 @@ def generate_clustered_handover_dates(total_records):
 
     return dates[:total_records]
 
-# =============================
+
 # DATASET GENERATION
-# =============================
+
 def generate_dataset():
 
     company_names = generate_unique_company_names(TOTAL_RECORDS)
@@ -147,9 +143,8 @@ def generate_dataset():
 
     return records
 
-# =============================
-# MAIN
-# =============================
+
+
 if __name__ == "__main__":
     data = generate_dataset()
     with open("fedex_ar_snapshot_6900.csv", "w", newline="", encoding="utf-8") as f:
@@ -157,4 +152,4 @@ if __name__ == "__main__":
         writer.writeheader()
         writer.writerows(data)
 
-    print("✓ Dataset generated successfully (6900 rows)")
+    print("Dataset generated successfully (6900 rows)")
