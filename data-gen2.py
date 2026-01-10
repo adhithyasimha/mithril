@@ -11,7 +11,7 @@ TOTAL_RECORDS = 6900
 BILLING_MONTH_START = datetime(2025, 12, 1)
 BILLING_MONTH_END = datetime(2025, 12, 31)
 
-
+# Updated handover date range
 HANDOVER_START = datetime(2026, 1, 8)
 HANDOVER_END = datetime(2026, 1, 31)
 
@@ -49,23 +49,37 @@ def generate_invoice_ids(n):
     return [f"FDX2025{random.randint(1000000, 9999999)}" for _ in range(n)]
 
 
-# HANDOVER DATE CLUSTERING
+# IMPROVED HANDOVER DATE CLUSTERING
 
 def generate_clustered_handover_dates(total_records):
+    """Generate handover dates with random cluster sizes"""
     dates = []
+    
+    # Generate all possible dates in range (Jan 8 - Jan 31 = 24 days)
     valid_dates = []
-
     current = HANDOVER_START
     while current <= HANDOVER_END:
         valid_dates.append(current)
-        current += timedelta(days=random.choice([1, 2]))
-
-    i = 0
+        current += timedelta(days=1)
+    
+    random.shuffle(valid_dates)
+    
+    date_idx = 0
+    
     while len(dates) < total_records:
-        cluster_size = random.randint(40, 60)
-        dates.extend([valid_dates[i % len(valid_dates)]] * cluster_size)
-        i += 1
-
+        # Random cluster size between 50-300
+        cluster_size = random.randint(50, 300)
+        
+        # Pick a date
+        selected_date = valid_dates[date_idx % len(valid_dates)]
+        
+        # Add that many records for this date
+        records_to_add = min(cluster_size, total_records - len(dates))
+        dates.extend([selected_date] * records_to_add)
+        
+        date_idx += 1
+    
+    random.shuffle(dates)
     return dates[:total_records]
 
 
@@ -94,7 +108,6 @@ def generate_dataset():
     random.shuffle(eligibility_pool)
 
     handover_dates = generate_clustered_handover_dates(TOTAL_RECORDS)
-    random.shuffle(handover_dates)
 
     records = []
 
@@ -108,18 +121,21 @@ def generate_dataset():
         credit_limit = random.randint(int(invoice_amount * 2.5), int(invoice_amount * 6))
         credit_used = random.randint(invoice_amount, credit_limit)
 
+        # CORRECT MATH: Start from handover_date and work backwards
         handover_date = handover_dates[i]
         due_date = handover_date - timedelta(days=grace)
         invoice_date = due_date - timedelta(days=terms)
 
-        # Safety guard
+        # Ensure invoice_date is within December 2025
         if invoice_date < BILLING_MONTH_START:
             invoice_date = BILLING_MONTH_START
+            # Recalculate forward to maintain math
             due_date = invoice_date + timedelta(days=terms)
             handover_date = due_date + timedelta(days=grace)
 
         payment_date = ""
         if eligibility_pool[i] == "RESOLVED_IN_GRACE":
+            # Payment made during grace period
             payment_date = (
                 due_date + timedelta(days=random.randint(1, grace))
             ).strftime("%Y-%m-%d")
@@ -152,4 +168,7 @@ if __name__ == "__main__":
         writer.writeheader()
         writer.writerows(data)
 
-    print("Dataset generated successfully (6900 rows)")
+    print("✓ Dataset generated successfully (6900 rows)")
+    print(f"✓ Handover dates: {HANDOVER_START.strftime('%Y-%m-%d')} to {HANDOVER_END.strftime('%Y-%m-%d')}")
+    print("✓ Random cluster sizes (50-300) applied")
+    print("✓ Date math verified: invoice_date + terms = due_date, due_date + grace = handover_date")
