@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Manager Portal - Create Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* SubZero V.2.0 Action Colors */
+            --action-primary: #97144D;
+            --action-secondary: #ED1164;
+            --action-tertiary: #6A0D39;
+
+            /* SubZero V.2.0 Surface Colors */
+            --surface-background: #FFFFFF;
+            --surface-secondary: #F9F9F9;
+            --surface-tertiary: #404040;
+
+            /* SubZero V.2.0 Typography Colors */
+            --typo-primary: #282828;
+            --typo-secondary: #6E6E6E;
+            --typo-tertiary: #9D9D9D;
+            --typo-on-surface: #FFFFFF;
+
+            /* SubZero V.2.0 Support Colors */
+            --support-negative: #EB0000;
+            --support-positive: #278829;
+            --support-warning: #D84008;
+            --support-negative-neutral: #F9EBEF;
+
+            /* SubZero V.2.0 Stroke Colors */
+            --stroke-default: #E2E2E2;
+            --stroke-hover: #F9B0CC;
+
+            /* Neutral Colors */
+            --neutral-1: #F1F4F7;
+
+            /* Spacing tokens */
+            --spacing-glacial: 8px;
+            --spacing-frostbite: 12px;
+            --spacing-bittercold: 16px;
+            --spacing-cool: 20px;
+            --spacing-mild: 24px;
+            --spacing-warm: 32px;
+            --spacing-tropical: 40px;
+            --spacing-blazing: 48px;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, var(--surface-background) 0%, var(--neutral-1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: var(--spacing-bittercold);
+        }
+
+        .signup-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--surface-background);
+            border-radius: 12px;
+            border: 1px solid var(--stroke-default);
+            box-shadow: 0 8px 24px rgba(151, 20, 77, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+            padding: var(--spacing-blazing) var(--spacing-warm);
+            animation: fadeIn 0.4s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: var(--spacing-warm);
+        }
+
+        .signup-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--typo-primary);
+            margin-bottom: var(--spacing-frostbite);
+            letter-spacing: -0.5px;
+        }
+
+        .signup-header p {
+            font-size: 14px;
+            color: var(--typo-secondary);
+            font-weight: 400;
+        }
+
+        .signup-form {
+            margin-bottom: var(--spacing-mild);
+        }
+
+        .form-fields {
+            margin-bottom: var(--spacing-mild);
+        }
+
+        .form-field {
+            margin-bottom: var(--spacing-cool);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--typo-primary);
+            margin-bottom: var(--spacing-glacial);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--typo-tertiary);
+            z-index: 1;
+            transition: color 0.2s ease;
+        }
+
+        .input-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .input-icon-wrapper .input-field {
+            padding-left: 40px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: var(--spacing-frostbite) var(--spacing-bittercold);
+            font-size: 14px;
+            border: 1px solid var(--stroke-default);
+            border-radius: 6px;
+            background-color: var(--surface-background);
+            color: var(--typo-primary);
+            transition: all 0.2s ease;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .input-field::placeholder {
+            color: var(--typo-tertiary);
+        }
+
+        .input-field:hover:not(:disabled) {
+            border-color: var(--stroke-hover);
+            background-color: var(--surface-background);
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--action-primary);
+            background-color: var(--surface-background);
+            box-shadow: 0 0 0 3px rgba(151, 20, 77, 0.1);
+        }
+
+        .input-field:focus + .input-icon,
+        .input-field:focus ~ .input-icon {
+            color: var(--action-primary);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            border: none;
+            background: none;
+            color: var(--typo-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+            z-index: 2;
+        }
+
+        .password-toggle:hover {
+            color: var(--action-primary);
+        }
+
+        .password-toggle svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .input-error {
+            font-size: 12px;
+            color: var(--support-negative);
+            margin-top: 6px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .input-error.show {
+            display: block;
+        }
+
+        .password-strength {
+            margin-top: var(--spacing-bittercold);
+            padding: var(--spacing-bittercold);
+            background-color: var(--surface-secondary);
+            border: 1px solid var(--stroke-default);
+            border-radius: 6px;
+        }
+
+        .strength-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-glacial);
+            margin-bottom: var(--spacing-glacial);
+            font-size: 12px;
+            color: var(--typo-secondary);
+        }
+
+        .strength-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .strength-check {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background-color: var(--stroke-default);
+            color: var(--typo-on-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .strength-check.done {
+            background-color: var(--support-positive);
+        }
+
+        .btn {
+            width: 100%;
+            padding: var(--spacing-frostbite) var(--spacing-bittercold);
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-glacial);
+            min-height: 44px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--action-primary);
+            color: var(--typo-on-surface);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--action-secondary);
+            box-shadow: 0 8px 16px rgba(151, 20, 77, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        .btn:disabled .btn-loader {
+            display: block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: var(--spacing-bittercold);
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: var(--spacing-cool);
+            border: 1px solid;
+            display: none;
+            font-weight: 600;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-error {
+            background-color: var(--support-negative-neutral);
+            color: var(--support-negative);
+            border-color: var(--action-secondary);
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--stroke-default);
+            margin: var(--spacing-mild) 0;
+        }
+
+        .signup-footer {
+            text-align: center;
+            font-size: 13px;
+            color: var(--typo-secondary);
+        }
+
+        .signup-footer p {
+            margin-bottom: var(--spacing-glacial);
+        }
+
+        .signup-footer a {
+            color: var(--action-primary);
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .signup-footer a:hover {
+            color: var(--action-secondary);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: var(--spacing-warm) var(--spacing-mild);
+                border-radius: 8px;
+            }
+
+            .signup-header h1 {
+                font-size: 24px;
+            }
+
+            .signup-header p {
+                font-size: 13px;
+            }
+
+            .input-field {
+                font-size: 16px;
+            }
+
+            body {
+                padding: var(--spacing-mild);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <!-- Header -->
+        <div class="signup-header">
+            <h1>Create Account</h1>
+            <p>Join the Manager Portal</p>
+        </div>
+
+        <!-- Alert -->
+        <div class="alert alert-error" id="errorAlert">
+            <span id="errorMessage"></span>
+        </div>
+
+        <!-- Form -->
+        <form id="signupForm" class="signup-form">
+            <div class="form-fields">
+                <!-- First Name Field -->
+                <div class="form-field">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <div class="input-icon-wrapper">
+                        <div class="input-icon">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="8" r="4"/>
+                                <path d="M12 14c-6 0-8 3-8 3v3h16v-3s-2-3-8-3z"/>
+                            </svg>
+                        </div>
+                        <input type="text" id="firstName" name="firstName" class="input-field" placeholder="John" required autocomplete="given-name">
+                    </div>
+                    <div class="input-error" id="firstNameError"></div>
+                </div>
+
+                <!-- Last Name Field -->
+                <div class="form-field">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <div class="input-icon-wrapper">
+                        <div class="input-icon">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="8" r="4"/>
+                                <path d="M12 14c-6 0-8 3-8 3v3h16v-3s-2-3-8-3z"/>
+                            </svg>
+                        </div>
+                        <input type="text" id="lastName" name="lastName" class="input-field" placeholder="Doe" required autocomplete="family-name">
+                    </div>
+                    <div class="input-error" id="lastNameError"></div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-field">
+                    <label for="email" class="form-label">Email Address</label>
+                    <div class="input-icon-wrapper">
+                        <div class="input-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M3 8l9 6 9-6M3 8v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8"/>
+                            </svg>
+                        </div>
+                        <input type="email" id="email" name="email" class="input-field" placeholder="manager@agency.com" required autocomplete="email">
+                    </div>
+                    <div class="input-error" id="emailError"></div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-field">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-icon-wrapper" style="position: relative;">
+                        <div class="input-icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                                <path d="M7 11V7a5 5 0 0110 0v4"/>
+                            </svg>
+                        </div>
+                        <input type="password" id="password" name="password" class="input-field" placeholder="••••••••" required style="padding-right: 40px;">
+                        <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+                            <svg id="eyeIcon" viewBox="0 0 24 24">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="input-error" id="passwordError"></div>
+                    
+                    <!-- Password Strength Indicator -->
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-item">
+                            <span class="strength-check" id="checkLength">✓</span>
+                            <span>At least 8 characters</span>
+                        </div>
+                        <div class="strength-item">
+                            <span class="strength-check" id="checkUpperCase">✓</span>
+                            <span>Uppercase letter (A-Z)</span>
+                        </div>
+                        <div class="strength-item">
+                            <span class="strength-check" id="checkNumber">✓</span>
+                            <span>Number (0-9)</span>
+                        </div>
+                        <div class="strength-item">
+                            <span class="strength-check" id="checkSpecial">✓</span>
+                            <span>Special character (!@#$%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="form-field">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <div class="input-icon-wrapper" style="position: relative;">
+                        <div class="input-icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                                <path d="M7 11V7a5 5 0 0110 0v4"/>
+                            </svg>
+                        </div>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="input-field" placeholder="••••••••" required style="padding-right: 40px;">
+                        <button type="button" class="password-toggle" id="confirmPasswordToggle" aria-label="Toggle password visibility">
+                            <svg id="eyeIconConfirm" viewBox="0 0 24 24">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="input-error" id="confirmPasswordError"></div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                <span class="btn-loader"></span>
+                <span class="btn-text">Create Account</span>
+            </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Footer -->
+        <div class="signup-footer">
+            <p>Already have an account? <a href="signin.html">Sign In</a></p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="js/local-auth.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/signup.js"></script>
+</body>
+</html>

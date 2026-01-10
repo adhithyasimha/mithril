@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Manager Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* SubZero V.2.0 Action Colors */
+            --action-primary: #97144D;
+            --action-secondary: #ED1164;
+            --action-tertiary: #6A0D39;
+
+            /* SubZero V.2.0 Surface Colors */
+            --surface-background: #FFFFFF;
+            --surface-secondary: #F9F9F9;
+            --surface-tertiary: #404040;
+
+            /* SubZero V.2.0 Typography Colors */
+            --typo-primary: #282828;
+            --typo-secondary: #6E6E6E;
+            --typo-tertiary: #9D9D9D;
+            --typo-on-surface: #FFFFFF;
+            --typo-disabled: #B4B4B4;
+            --typo-typical: #6A0D39;
+
+            /* SubZero V.2.0 Support Colors */
+            --support-negative: #EB0000;
+            --support-positive: #278829;
+            --support-warning: #D84008;
+            --support-negative-neutral: #F9EBEF;
+            --support-positive-neutral: #EFF9EB;
+            --support-warning-neutral: hsl(26, 54%, 95%);
+            --support-typical: #6A0D39;
+            --support-typical-neutral: #F4E8ED;
+
+            /* SubZero V.2.0 Stroke Colors */
+            --stroke-default: #E2E2E2;
+            --stroke-active: #404040;
+            --stroke-disabled: #B4B4B4;
+            --stroke-selected: #F14687;
+            --stroke-secondary-selected: #6A0D39;;
+            --stroke-hover: #F9B0CC;
+
+            /* SubZero V.2.0 Neutral Colors */
+            --neutral-1: #F1F4F7;
+            --neutral-2: #EBF9F8;
+            --neutral-3: #EBF0F9;
+            --neutral-4: #F4EBF9;
+            --neutral-5: #F9F6EB;
+            --neutral-6: #ff87bf;;
+
+            /* SubZero V.2.0 Data Visualization */
+            --datavis-1: #C578D3;
+            --datavis-2: #D84646;
+            --datavis-3: #5273CC;
+            --datavis-4: #D87D23;
+            --datavis-5: #6A0D39;
+
+            /* Spacing tokens */
+            --spacing-zero: 0;
+            --spacing-deepfreeze: 2px;
+            --spacing-quickfreeze: 4px;
+            --spacing-glacial: 8px;
+            --spacing-frostbite: 12px;
+            --spacing-bittercold: 16px;
+            --spacing-cool: 20px;
+            --spacing-mild: 24px;
+            --spacing-warm: 32px;
+            --spacing-tropical: 40px;
+            --spacing-blazing: 48px;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--neutral-1);
+            color: var(--typo-primary);
+            line-height: 1.6;
+        }
+
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: var(--typo-typical);
+            color: var(--typo-on-surface);
+            padding: var(--spacing-mild);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-warm);
+            padding-bottom: var(--spacing-mild);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu-item {
+            margin-bottom: var(--spacing-bittercold);
+        }
+
+        .sidebar-menu-link {
+            color: var(--typo-on-surface);
+            text-decoration: none;
+            padding: var(--spacing-glacial) var(--spacing-bittercold);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-bittercold);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu-link:hover {
+            background: var(--action-primary);
+            transform: translateX(4px);
+        }
+
+        .sidebar-menu-link.active {
+            background: var(--action-secondary);
+        }
+
+        .sidebar-menu-icon {
+            font-size: 20px;
+        }
+
+        /* Main Content */
+        .dashboard-container {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--neutral-1);
+        }
+
+        /* Header */
+        .dashboard-header {
+            background: var(--surface-background);
+            padding: var(--spacing-mild);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-warm);
+            border-bottom: 2px solid var(--stroke-default);
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--typo-primary);
+            margin-bottom: var(--spacing-glacial);
+        }
+
+        .header-left p {
+            color: var(--typo-secondary);
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-mild);
+        }
+
+        .manager-info {
+            text-align: right;
+        }
+
+        .manager-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--typo-primary);
+        }
+
+        .manager-tier {
+            font-size: 12px;
+            color: var(--typo-secondary);
+            text-transform: capitalize;
+            margin-top: 4px;
+        }
+
+        .logout-btn {
+            background: var(--action-secondary);
+            color: var(--typo-on-surface);
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: var(--action-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(151, 20, 77, 0.2);
+        }
+
+        /* Content Area */
+        .dashboard-content {
+            padding: 0 var(--spacing-warm) var(--spacing-warm);
+        }
+
+        /* Tier Badge */
+        .tier-badge {
+            display: inline-block;
+            padding: var(--spacing-glacial) var(--spacing-bittercold);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: var(--spacing-mild);
+        }
+
+        .tier-badge.small {
+            background: var(--support-typical-neutral);
+            color: var(--support-typical);
+            border: 2px solid var(--support-typical);
+        }
+
+        .tier-badge.mid {
+            background: var(--neutral-2);
+            color: var(--action-tertiary);
+            border: 2px solid var(--action-tertiary);
+        }
+
+        .tier-badge.large {
+            background: var(--support-warning-neutral);
+            color: var(--support-warning);
+            border: 2px solid var(--support-warning);
+        }
+
+        .tier-badge.mega {
+            background: var(--neutral-4);
+            color: var(--action-primary);
+            border: 2px solid var(--action-primary);
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--typo-primary);
+            margin: var(--spacing-warm) 0 var(--spacing-mild);
+            letter-spacing: -0.5px;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-mild);
+            margin-bottom: var(--spacing-warm);
+        }
+
+        .stat-card {
+            background: var(--surface-background);
+            padding: var(--spacing-mild);
+            border: 1px solid var(--stroke-default);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(151, 20, 77, 0.12);
+            border-color: var(--action-primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--typo-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: var(--spacing-glacial);
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--action-primary);
+            margin-bottom: var(--spacing-glacial);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: var(--support-positive);
+            margin-top: var(--spacing-glacial);
+            font-weight: 700;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            background: var(--surface-background);
+            border: 1px solid var(--stroke-default);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: var(--spacing-warm);
+        }
+
+        .table-header {
+            padding: var(--spacing-mild);
+            border-bottom: 2px solid var(--stroke-default);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface-secondary);
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--typo-primary);
+        }
+
+        .table-controls {
+            display: flex;
+            gap: var(--spacing-bittercold);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--surface-secondary);
+        }
+
+        thead th {
+            padding: var(--spacing-bittercold) var(--spacing-mild);
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--typo-secondary);
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--stroke-default);
+            letter-spacing: 0.5px;
+        }
+
+        tbody td {
+            padding: var(--spacing-bittercold) var(--spacing-mild);
+            border-bottom: 1px solid var(--stroke-default);
+            font-size: 14px;
+            color: var(--typo-primary);
+        }
+
+        tbody tr:hover {
+            background: var(--neutral-1);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-badge.active {
+            background: var(--support-positive-neutral);
+            color: var(--support-positive);
+        }
+
+        .status-badge.pending {
+            background: var(--support-warning-neutral);
+            color: var(--support-warning);
+        }
+
+        .status-badge.closed {
+            background: var(--support-negative-neutral);
+            color: var(--support-negative);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-warm);
+            color: var(--typo-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-mild);
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+                padding: var(--spacing-bittercold);
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: var(--spacing-mild);
+                align-items: flex-start;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            thead th,
+            tbody td {
+                padding: var(--spacing-glacial);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">FedEx DCA</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-link active">
+                        <span class="sidebar-menu-icon material-icons">dashboard</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-link">
+                        <span class="sidebar-menu-icon material-icons">folder_open</span>
+                        <span>Cases</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-link">
+                        <span class="sidebar-menu-icon material-icons">assessment</span>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="#" class="sidebar-menu-link">
+                        <span class="sidebar-menu-icon material-icons">settings</span>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="dashboard-container">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageSubtitle">Welcome back to your manager dashboard</p>
+                </div>
+                <div class="header-right">
+                    <div class="manager-info">
+                        <div class="manager-name" id="managerName">Manager</div>
+                        <div class="manager-tier" id="managerTier">tier</div>
+                    </div>
+                    <button class="logout-btn" onclick="handleLogout()">Logout</button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="dashboard-content">
+                <!-- Tier Badge -->
+                <div id="tierBadge" class="tier-badge"></div>
+
+                <!-- Stats Section -->
+                <h2 class="section-title">Overview</h2>
+                <div class="cards-grid" id="statsCards"></div>
+
+                <!-- Main Table Section -->
+                <h2 class="section-title">Data</h2>
+                <div class="table-wrapper">
+                    <div class="table-header">
+                        <h3 class="table-title" id="tableTitle">Cases</h3>
+                        <div class="table-controls">
+                            <button class="logout-btn" style="background: var(--primary-light); margin: 0;" onclick="refreshData()">
+                                <span class="material-icons" style="vertical-align: middle;">refresh</span> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead id="tableHead">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr>
+                                <td colspan="4" class="empty-state">Loading data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Secondary Table (for larger tiers) -->
+                <div id="secondaryTableSection"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="js/local-auth.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
