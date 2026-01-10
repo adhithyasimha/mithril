@@ -59,7 +59,7 @@ def main():
     # Load CSV
     df = pd.read_csv(CSV_PATH)
 
-    # ✅ OPTION 1 FIX: DEDUPLICATE CUSTOMERS
+
     df = df.drop_duplicates(subset=["customer_id"])
 
     # Connect DB
