@@ -3,9 +3,9 @@ import csv
 import random
 
 # ---------- DB ----------
-DB_HOST = "mithril-case-database.ctogioe46r4p.us-west-2.rds.amazonaws.com"
+DB_HOST = "<>"
 DB_USER = "admin"
-DB_PASS = "Qwerty123$"
+DB_PASS = ""
 DB_NAME = "mithril-case-database"
 DB_PORT = 3306
 
